@@ -1,23 +1,27 @@
 <header class="header">
-  <nav class="nav">
-    <a
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Home
-    </a>
+    <nav class="nav">
+        <div class="nav-left">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                Home
+            </a>
 
-    <a routerLink="/login" routerLinkActive="active">
-      Login
-    </a>
+            <a routerLink="/todos" routerLinkActive="active">
+                Todos
+            </a>
 
-    <a routerLink="/register" routerLinkActive="active">
-      Register
-    </a>
+            <a routerLink="/friends" routerLinkActive="active">
+                Friends
+            </a>
+        </div>
 
-    <a routerLink="/todos" routerLinkActive="active">
-      Todos
-    </a>
-  </nav>
+        <div class="nav-auth">
+            <a routerLink="/login" routerLinkActive="active">
+                Login
+            </a>
+
+            <a routerLink="/register" routerLinkActive="active">
+                Register
+            </a>
+        </div>
+    </nav>
 </header>
