@@ -1,0 +1,58 @@
+.login-page {
+  max-width: 400px;
+  margin: 40px auto;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 500;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+button[type='submit'] {
+  background-color: #1976d2;
+  color: white;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mock-button {
+  background-color: #eee;
+  color: #333;
+}
+
+.error {
+  margin-top: 16px;
+  color: #c62828;
+  font-weight: 500;
+}
+
+.success {
+  margin-top: 16px;
+  color: #2e7d32;
+  font-weight: 500;
+}

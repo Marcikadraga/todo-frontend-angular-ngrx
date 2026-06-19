@@ -1,12 +1,45 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  isDevMode,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+
+import { provideState, provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
+import { AuthEffects } from './features/auth/state/auth.effects';
+
+import { API_MODE } from './core/config/api-mode';
+import { AUTH_API } from './core/api/auth/auth-api';
+import { MockAuthApi } from './core/api/auth/mock-auth-api';
+import { RealAuthApi } from './core/api/auth/real-auth-api';
+
+import { AUTH_FEATURE_KEY } from './features/auth/state/auth.state';
+import { authReducer } from './features/auth/state/auth.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes)
-  ]
+    provideRouter(routes),
+    provideHttpClient(),
+
+    provideStore(),
+    provideState(AUTH_FEATURE_KEY, authReducer),
+    provideEffects([AuthEffects]),
+    provideStoreDevtools({
+      maxAge: 25,
+      logOnly: !isDevMode(),
+    }),
+
+    {
+      provide: AUTH_API,
+      useClass: API_MODE === 'mock' ? MockAuthApi : RealAuthApi,
+    },
+  ],
 };

@@ -1,27 +1,39 @@
 <header class="header">
-    <nav class="nav">
-        <div class="nav-left">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                Home
-            </a>
+  <nav class="nav">
+    <div class="nav-left">
+      <a
+        routerLink="/"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Home
+      </a>
 
-            <a routerLink="/todos" routerLinkActive="active">
-                Todos
-            </a>
+      <a routerLink="/todos" routerLinkActive="active">
+        Todos
+      </a>
+    </div>
 
-            <a routerLink="/friends" routerLinkActive="active">
-                Friends
-            </a>
-        </div>
+    <div class="nav-auth">
+      @if (isAuthenticated$ | async) {
+        @if (currentUser$ | async; as user) {
+          <span class="user-name">
+            Hello, {{ user.name }}
+          </span>
+        }
 
-        <div class="nav-auth">
-            <a routerLink="/login" routerLinkActive="active">
-                Login
-            </a>
+        <button type="button" class="logout-button" (click)="logout()">
+          Logout
+        </button>
+      } @else {
+        <a routerLink="/login" routerLinkActive="active">
+          Login
+        </a>
 
-            <a routerLink="/register" routerLinkActive="active">
-                Register
-            </a>
-        </div>
-    </nav>
+        <a routerLink="/register" routerLinkActive="active">
+          Register
+        </a>
+      }
+    </div>
+  </nav>
 </header>
