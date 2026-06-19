@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { delay, Observable, of, throwError } from 'rxjs';
+import { MOCK_USERS, MockUser } from '../../mock-data/mock-users';
 
 import {
   AuthApi,
@@ -8,29 +9,10 @@ import {
   RegisterRequest,
 } from './auth-api';
 
-interface MockUser {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-}
 
 @Injectable()
 export class MockAuthApi implements AuthApi {
-  private users: MockUser[] = [
-    {
-      id: '1',
-      name: 'Marci',
-      email: 'MarciMockLogin_2026!',
-      password: 'MarciMockLogin_2026!',
-    },
-        {
-      id: '2',
-      name: 'Béla',
-      email: 'bela@test.com',
-      password: 'bela_2026!',
-    },
-  ];
+  private users: MockUser[] = [...MOCK_USERS];
 
   login(request: LoginRequest): Observable<AuthResponse> {
     const user = this.users.find(
