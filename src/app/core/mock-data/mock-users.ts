@@ -8,14 +8,14 @@ export const MOCK_USERS: MockUser[] = [
   {
     id: '1',
     name: 'Marci',
-    email: 'marci@test.com',
+    email: 'MarciMockLogin_2026!',
     password: 'MarciMockLogin_2026!',
   },
   {
     id: '2',
     name: 'Anna',
     email: 'anna@test.com',
-    password: 'AnnaMockLogin_2026!',
+    password: 'anna@test.com',
   },
   {
     id: '3',

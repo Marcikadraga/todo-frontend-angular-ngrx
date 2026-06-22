@@ -22,6 +22,14 @@ import { RealAuthApi } from './core/api/auth/real-auth-api';
 import { AUTH_FEATURE_KEY } from './features/auth/state/auth.state';
 import { authReducer } from './features/auth/state/auth.reducer';
 
+import { TODO_API } from './core/api/todo/todo-api';
+import { MockTodoApi } from './core/api/todo/mock-todo-api';
+import { RealTodoApi } from './core/api/todo/real-todo-api';
+
+import { TODO_FEATURE_KEY } from './features/todos/state/todo.state';
+import { todoReducer } from './features/todos/state/todo.reducer';
+import { TodoEffects } from './features/todos/state/todo.effects';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -31,7 +39,8 @@ export const appConfig: ApplicationConfig = {
 
     provideStore(),
     provideState(AUTH_FEATURE_KEY, authReducer),
-    provideEffects([AuthEffects]),
+    provideState(TODO_FEATURE_KEY, todoReducer),
+    provideEffects([AuthEffects, TodoEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -40,6 +49,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: AUTH_API,
       useClass: API_MODE === 'mock' ? MockAuthApi : RealAuthApi,
+    },
+    {
+      provide: TODO_API,
+      useClass: API_MODE === 'mock' ? MockTodoApi : RealTodoApi,
     },
   ],
 };

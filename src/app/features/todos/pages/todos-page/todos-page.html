@@ -1,1 +1,62 @@
-<p>todos-page works!</p>
+<section class="todos-page">
+  <header class="todos-header">
+    <div>
+      <h1>My Todos</h1>
+
+      @if (currentUser$ | async; as user) {
+        <p>
+          Showing todos for {{ user.name }}
+        </p>
+      }
+    </div>
+  </header>
+
+  @if (loading$ | async) {
+    <p>Loading todos...</p>
+  } @else {
+    @if (error$ | async; as error) {
+      <p class="error">
+        {{ error }}
+      </p>
+    } @else {
+      @if (todos$ | async; as todos) {
+        @if (todos.length === 0) {
+          <p>No todos found.</p>
+        } @else {
+          <ul class="todo-list">
+            @for (todo of todos; track todo.id) {
+              <li class="todo-card" [class.completed]="todo.completed">
+                <div class="todo-card-header">
+                  <h2>{{ todo.title }}</h2>
+
+                  <span class="priority" [class]="todo.priority">
+                    {{ todo.priority }}
+                  </span>
+                </div>
+
+                <p>{{ todo.description }}</p>
+
+                <div class="todo-meta">
+                  <span>
+                    Status:
+                    @if (todo.completed) {
+                      Completed
+                    } @else {
+                      Pending
+                    }
+                  </span>
+
+                  @if (todo.deadline) {
+                    <span>
+                      Deadline: {{ todo.deadline }}
+                    </span>
+                  }
+                </div>
+              </li>
+            }
+          </ul>
+        }
+      }
+    }
+  }
+</section>
