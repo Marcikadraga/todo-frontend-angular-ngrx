@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { HomePage } from './features/home/pages/home-page/home-page';
 import { LoginPage } from './features/auth/pages/login-page/login-page';
 import { RegisterPage } from './features/auth/pages/register-page/register-page';
 import { TodosPage } from './features/todos/pages/todos-page/todos-page';
@@ -10,7 +9,8 @@ import { authGuard } from './features/auth/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    component: HomePage,
+    redirectTo: 'todos',
+    pathMatch: 'full',
   },
   {
     path: 'login',
