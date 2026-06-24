@@ -1,1 +1,29 @@
-<p>todo-item works!</p>
+<article class="todo-row" [class.completed]="todo.completed">
+  <div class="sender-avatar">
+    {{ todo.assignedByUserId }}
+  </div>
+
+  <div class="todo-main">
+    <h2 class="todo-title">
+      {{ todo.title }}
+    </h2>
+
+    <p class="todo-description">
+      {{ todo.description }}
+    </p>
+  </div>
+
+  <div class="todo-side">
+    <span class="priority priority-{{ todo.priority }}">
+      {{ todo.priority }}
+    </span>
+
+    <span class="status">
+      @if (todo.completed) {
+        Done
+      } @else {
+        Pending
+      }
+    </span>
+  </div>
+</article>

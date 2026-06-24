@@ -10,8 +10,8 @@ export class MockTodoApi implements TodoApi {
   private todos: Todo[] = [...MOCK_TODOS];
 
   getTodosByOwnerId(ownerId: string): Observable<Todo[]> {
-    const userTodos = this.todos.filter(todo => todo.ownerId === ownerId);
+    const userTodos = this.todos.filter(todo => todo.assignedToUserId === ownerId);
 
-    return of(userTodos).pipe(delay(500));
+    return of(userTodos).pipe(delay(100));
   }
 }

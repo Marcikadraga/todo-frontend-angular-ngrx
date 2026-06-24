@@ -1,0 +1,31 @@
+.todos-page {
+  max-width: 1000px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+.todos-header {
+  margin-bottom: 20px;
+}
+
+.todos-header h1 {
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.todos-header p {
+  margin: 0;
+  color: #5f6368;
+}
+
+.todo-list {
+  border: 1px solid #dadce0;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.error {
+  color: #c62828;
+  font-weight: 600;
+}

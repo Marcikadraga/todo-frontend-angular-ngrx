@@ -1,9 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 
 import { selectCurrentUser } from '../../../auth/state/auth.selectors';
+import { TodoItem } from '../../components/todo-item/todo-item';
 import { TodoActions } from '../../state/todo.actions';
 import {
   selectTodoError,
@@ -13,17 +14,24 @@ import {
 
 @Component({
   selector: 'app-todos-page',
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, TodoItem],
   templateUrl: './todos-page.html',
   styleUrl: './todos-page.scss',
 })
 export class TodosPage implements OnInit {
   private readonly store = inject(Store);
 
-  currentUser$ = this.store.select(selectCurrentUser);
-  todos$ = this.store.select(selectTodos);
-  loading$ = this.store.select(selectTodoLoading);
-  error$ = this.store.select(selectTodoError);
+  private readonly currentUser$ = this.store.select(selectCurrentUser);
+  private readonly todos$ = this.store.select(selectTodos);
+  private readonly loading$ = this.store.select(selectTodoLoading);
+  private readonly error$ = this.store.select(selectTodoError);
+
+  vm$ = combineLatest({
+    currentUser: this.currentUser$,
+    todos: this.todos$,
+    loading: this.loading$,
+    error: this.error$,
+  });
 
   ngOnInit(): void {
     this.store
