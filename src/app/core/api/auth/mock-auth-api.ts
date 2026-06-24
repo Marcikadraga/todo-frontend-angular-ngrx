@@ -28,7 +28,7 @@ export class MockAuthApi implements AuthApi {
     return of({
       user: {
         id: user.id,
-        name: user.name,
+        username: user.username,
         email: user.email,
       },
       token: 'mock-token-123',
@@ -46,7 +46,7 @@ export class MockAuthApi implements AuthApi {
 
     const newUser: MockUser = {
       id: crypto.randomUUID(),
-      name: request.name,
+      username: request.username,
       email: request.email,
       password: request.password,
     };
@@ -56,7 +56,7 @@ export class MockAuthApi implements AuthApi {
     return of({
       user: {
         id: newUser.id,
-        name: newUser.name,
+        username: newUser.username,
         email: newUser.email,
       },
       token: 'mock-token-123',

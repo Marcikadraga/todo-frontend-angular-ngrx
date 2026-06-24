@@ -9,7 +9,7 @@
       @if (isAuthenticated$ | async) {
       @if (currentUser$ | async; as user) {
       <span class="user-name">
-        Hello, {{ user.name }}
+        Hello, {{ user.username }}
       </span>
       }
 
