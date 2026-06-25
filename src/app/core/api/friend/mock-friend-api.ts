@@ -28,6 +28,13 @@ export class MockFriendApi implements FriendApi {
 
     private friendships: Friendship[] = [...MOCK_FRIENDSHIPS];
 
+    private isTryingToAddSelf(
+        senderUserId: string,
+        receiverUserId: string
+    ): boolean {
+        return senderUserId === receiverUserId;
+    }
+
     searchUsers(
         query: string,
         currentUserId: string
@@ -95,16 +102,71 @@ export class MockFriendApi implements FriendApi {
         senderUserId: string,
         receiverUserId: string
     ): Observable<FriendRequest> {
-        throw new Error('Method not implemented.');
+        if (this.isTryingToAddSelf(senderUserId, receiverUserId)) {
+            return throwError(() => new Error('You cannot add yourself as a friend'));
+        }
+
+        const newRequest: FriendRequest = {
+            id: crypto.randomUUID(),
+            senderUserId,
+            receiverUserId,
+            status: 'pending',
+            createdAt: new Date().toISOString(),
+            respondedAt: null,
+        };
+
+        this.friendRequests.push(newRequest);
+
+        return of(newRequest).pipe(delay(300));
     }
 
-    acceptFriendRequest(
-        requestId: string
-    ): Observable<AcceptFriendRequestResponse> {
-        throw new Error('Method not implemented.');
+    acceptFriendRequest(requestId: string): Observable<AcceptFriendRequestResponse> {
+        const request = this.friendRequests.find(request => {
+            return request.id === requestId;
+        });
+
+        if (!request) {
+            return throwError(() => new Error('Friend request not found'));
+        }
+
+        if (request.status !== 'pending') {
+            return throwError(() => new Error('Friend request is not pending'));
+        }
+
+        request.status = 'accepted';
+        request.respondedAt = new Date().toISOString();
+
+        const friendship: Friendship = {
+            id: crypto.randomUUID(),
+            userId: request.senderUserId,
+            friendId: request.receiverUserId,
+            createdAt: new Date().toISOString(),
+        };
+
+        this.friendships.push(friendship);
+
+        return of({
+            request,
+            friendship,
+        }).pipe(delay(300));
     }
 
     declineFriendRequest(requestId: string): Observable<FriendRequest> {
-        throw new Error('Method not implemented.');
+        const request = this.friendRequests.find(request => {
+            return request.id === requestId;
+        });
+
+        if (!request) {
+            return throwError(() => new Error('Friend request not found'));
+        }
+
+        if (request.status !== 'pending') {
+            return throwError(() => new Error('Friend request is not pending'));
+        }
+
+        request.status = 'declined';
+        request.respondedAt = new Date().toISOString();
+
+        return of(request).pipe(delay(300));
     }
 }
