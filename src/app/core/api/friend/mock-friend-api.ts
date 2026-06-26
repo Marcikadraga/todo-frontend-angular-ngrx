@@ -10,10 +10,10 @@ import { MOCK_FRIENDSHIPS } from '../../mock-data/mock-friendships';
 import { MOCK_USERS } from '../../mock-data/mock-users';
 
 import {
-  areAlreadyFriends,
-  hasPendingRequestBetweenUsers,
-  isTryingToAddSelf,
-  userExists,
+    areAlreadyFriends,
+    hasPendingRequestBetweenUsers,
+    isTryingToAddSelf,
+    userExists,
 } from './friend-validation.helpers';
 
 import {
@@ -105,55 +105,55 @@ export class MockFriendApi implements FriendApi {
         return of(outgoingRequests).pipe(delay(300));
     }
 
-sendFriendRequest(
-  senderUserId: string,
-  receiverUserId: string
-): Observable<FriendRequest> {
-  if (isTryingToAddSelf(senderUserId, receiverUserId)) {
-    return throwError(() => new Error('You cannot add yourself as a friend'));
-  }
+    sendFriendRequest(
+        senderUserId: string,
+        receiverUserId: string
+    ): Observable<FriendRequest> {
+        if (isTryingToAddSelf(senderUserId, receiverUserId)) {
+            return throwError(() => new Error('You cannot add yourself as a friend'));
+        }
 
-  if (!userExists(this.users, senderUserId)) {
-    return throwError(() => new Error('Sender user not found'));
-  }
+        if (!userExists(this.users, senderUserId)) {
+            return throwError(() => new Error('Sender user not found'));
+        }
 
-  if (!userExists(this.users, receiverUserId)) {
-    return throwError(() => new Error('Receiver user not found'));
-  }
+        if (!userExists(this.users, receiverUserId)) {
+            return throwError(() => new Error('Receiver user not found'));
+        }
 
-  if (
-    hasPendingRequestBetweenUsers(
-      this.friendRequests,
-      senderUserId,
-      receiverUserId
-    )
-  ) {
-    return throwError(() => new Error('There is already a pending request between these users'));
-  }
+        if (
+            hasPendingRequestBetweenUsers(
+                this.friendRequests,
+                senderUserId,
+                receiverUserId
+            )
+        ) {
+            return throwError(() => new Error('There is already a pending request between these users'));
+        }
 
-  if (
-    areAlreadyFriends(
-      this.friendships,
-      senderUserId,
-      receiverUserId
-    )
-  ) {
-    return throwError(() => new Error('These users are already friends'));
-  }
+        if (
+            areAlreadyFriends(
+                this.friendships,
+                senderUserId,
+                receiverUserId
+            )
+        ) {
+            return throwError(() => new Error('These users are already friends'));
+        }
 
-  const newRequest: FriendRequest = {
-    id: crypto.randomUUID(),
-    senderUserId,
-    receiverUserId,
-    status: 'pending',
-    createdAt: new Date().toISOString(),
-    respondedAt: null,
-  };
+        const newRequest: FriendRequest = {
+            id: crypto.randomUUID(),
+            senderUserId,
+            receiverUserId,
+            status: 'pending',
+            createdAt: new Date().toISOString(),
+            respondedAt: null,
+        };
 
-  this.friendRequests.push(newRequest);
+        this.friendRequests.push(newRequest);
 
-  return of(newRequest).pipe(delay(300));
-}
+        return of(newRequest).pipe(delay(300));
+    }
 
     acceptFriendRequest(requestId: string): Observable<AcceptFriendRequestResponse> {
         const request = this.friendRequests.find(request => {
