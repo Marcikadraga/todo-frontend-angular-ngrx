@@ -30,6 +30,14 @@ import { TODO_FEATURE_KEY } from './features/todos/state/todo.state';
 import { todoReducer } from './features/todos/state/todo.reducer';
 import { TodoEffects } from './features/todos/state/todo.effects';
 
+import { FRIEND_API } from './core/api/friend/friend-api';
+import { MockFriendApi } from './core/api/friend/mock-friend-api';
+import { RealFriendApi } from './core/api/friend/real-friend-api';
+
+import { FRIEND_FEATURE_KEY } from './features/friends/state/friend.state';
+import { friendReducer } from './features/friends/state/friend.reducer';
+import { FriendEffects } from './features/friends/state/friend.effects';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
@@ -40,7 +48,8 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideState(AUTH_FEATURE_KEY, authReducer),
     provideState(TODO_FEATURE_KEY, todoReducer),
-    provideEffects([AuthEffects, TodoEffects]),
+    provideState(FRIEND_FEATURE_KEY, friendReducer),
+    provideEffects([AuthEffects, TodoEffects, FriendEffects]),
     provideStoreDevtools({
       maxAge: 25,
       logOnly: !isDevMode(),
@@ -53,6 +62,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: TODO_API,
       useClass: API_MODE === 'mock' ? MockTodoApi : RealTodoApi,
+    },
+    {
+      provide: FRIEND_API,
+      useClass: API_MODE === 'mock' ? MockFriendApi : RealFriendApi,
     },
   ],
 };
