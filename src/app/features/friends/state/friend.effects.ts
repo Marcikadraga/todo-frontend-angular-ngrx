@@ -10,6 +10,14 @@ export class FriendEffects {
   private readonly actions$ = inject(Actions);
   private readonly friendApi = inject(FRIEND_API);
 
+  private getErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+      return error.message;
+    }
+
+    return 'Something went wrong';
+  }
+
   searchUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(FriendActions.searchUsersStarted),
@@ -114,13 +122,83 @@ export class FriendEffects {
     );
   });
 
+  sendFriendRequest$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FriendActions.sendFriendRequestStarted),
 
+      switchMap(action => {
+        return this.friendApi
+          .sendFriendRequest(action.senderUserId, action.receiverUserId)
+          .pipe(
+            map(request => {
+              return FriendActions.sendFriendRequestSuccess({
+                request: request,
+              });
+            }),
 
-  private getErrorMessage(error: unknown): string {
-    if (error instanceof Error) {
-      return error.message;
-    }
+            catchError(error => {
+              return of(
+                FriendActions.sendFriendRequestFailure({
+                  error: this.getErrorMessage(error),
+                })
+              );
+            })
+          );
+      })
+    );
+  });
 
-    return 'Something went wrong';
-  }
+  acceptFriendRequest$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FriendActions.acceptFriendRequestStarted),
+
+      switchMap(action => {
+        return this.friendApi
+          .acceptFriendRequest(action.requestId)
+          .pipe(
+            map(response => {
+              return FriendActions.acceptFriendRequestSuccess({
+                request: response.request,
+                friendship: response.friendship,
+              });
+            }),
+
+            catchError(error => {
+              return of(
+                FriendActions.acceptFriendRequestFailure({
+                  error: this.getErrorMessage(error),
+                })
+              );
+            })
+          );
+      })
+    );
+  });
+
+  declineFriendRequest$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(FriendActions.declineFriendRequestStarted),
+
+      switchMap(action => {
+        return this.friendApi
+          .declineFriendRequest(action.requestId)
+          .pipe(
+            map(request => {
+              return FriendActions.declineFriendRequestSuccess({
+                request: request,
+              });
+            }),
+
+            catchError(error => {
+              return of(
+                FriendActions.declineFriendRequestFailure({
+                  error: this.getErrorMessage(error),
+                })
+              );
+            })
+          );
+      })
+    );
+  });
+
 }
