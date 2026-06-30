@@ -1,1 +1,31 @@
-<p>friends-page works!</p>
+@if (vm$ | async; as vm) {
+  <section class="friends-page">
+    <header class="friends-header">
+      <h1>My Friends</h1>
+
+      @if (vm.currentUser) {
+        <p>
+          Showing friends for {{ vm.currentUser.username }}
+        </p>
+      }
+    </header>
+
+    @if (vm.loading) {
+      <p>Loading friends...</p>
+    } @else if (vm.error) {
+      <p class="error">
+        {{ vm.error }}
+      </p>
+    } @else {
+      <app-friends-list [friends]="vm.friends" />
+
+    <app-incoming-requests
+    [requests]="vm.incomingRequests"
+    (acceptClicked)="acceptRequest($event)"
+    (declineClicked)="declineRequest($event)"
+    />
+
+      <app-outgoing-requests [requests]="vm.outgoingRequests" />
+    }
+  </section>
+}

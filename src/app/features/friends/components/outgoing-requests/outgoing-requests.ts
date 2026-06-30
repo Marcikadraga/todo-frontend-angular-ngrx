@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { FriendRequest } from '../../../../core/models/friend-request.model';
 
 @Component({
   selector: 'app-outgoing-requests',
@@ -7,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './outgoing-requests.scss',
 })
 export class OutgoingRequests {
-
+  @Input({ required: true }) requests!: FriendRequest[];
 }

@@ -12,7 +12,6 @@ import { MOCK_USERS } from '../../mock-data/mock-users';
 import {
     areAlreadyFriends,
     hasPendingRequestBetweenUsers,
-    isTryingToAddSelf,
     userExists,
 } from './friend-validation.helpers';
 
@@ -31,16 +30,18 @@ export class MockFriendApi implements FriendApi {
         };
     });
 
-    private friendRequests: FriendRequest[] = [...MOCK_FRIEND_REQUESTS];
+    private friendRequests: FriendRequest[] = MOCK_FRIEND_REQUESTS.map(request => {
+        return {
+            ...request,
+        };
+    });
 
-    private friendships: Friendship[] = [...MOCK_FRIENDSHIPS];
+    private friendships: Friendship[] = MOCK_FRIENDSHIPS.map(friendship => {
+        return {
+            ...friendship,
+        };
+    });
 
-    private isTryingToAddSelf(
-        senderUserId: string,
-        receiverUserId: string
-    ): boolean {
-        return senderUserId === receiverUserId;
-    }
 
     searchUsers(
         query: string,
@@ -109,10 +110,6 @@ export class MockFriendApi implements FriendApi {
         senderUserId: string,
         receiverUserId: string
     ): Observable<FriendRequest> {
-        if (isTryingToAddSelf(senderUserId, receiverUserId)) {
-            return throwError(() => new Error('You cannot add yourself as a friend'));
-        }
-
         if (!userExists(this.users, senderUserId)) {
             return throwError(() => new Error('Sender user not found'));
         }
@@ -168,20 +165,31 @@ export class MockFriendApi implements FriendApi {
             return throwError(() => new Error('Friend request is not pending'));
         }
 
-        request.status = 'accepted';
-        request.respondedAt = new Date().toISOString();
+        const updatedRequest: FriendRequest = {
+            ...request,
+            status: 'accepted',
+            respondedAt: new Date().toISOString(),
+        };
+
+        this.friendRequests = this.friendRequests.map(friendRequest => {
+            if (friendRequest.id === requestId) {
+                return updatedRequest;
+            }
+
+            return friendRequest;
+        });
 
         const friendship: Friendship = {
             id: crypto.randomUUID(),
-            userId: request.senderUserId,
-            friendId: request.receiverUserId,
+            userId: updatedRequest.senderUserId,
+            friendId: updatedRequest.receiverUserId,
             createdAt: new Date().toISOString(),
         };
 
-        this.friendships.push(friendship);
+        this.friendships = [...this.friendships, friendship];
 
         return of({
-            request,
+            request: updatedRequest,
             friendship,
         }).pipe(delay(300));
     }
@@ -199,9 +207,20 @@ export class MockFriendApi implements FriendApi {
             return throwError(() => new Error('Friend request is not pending'));
         }
 
-        request.status = 'declined';
-        request.respondedAt = new Date().toISOString();
+        const updatedRequest: FriendRequest = {
+            ...request,
+            status: 'declined',
+            respondedAt: new Date().toISOString(),
+        };
 
-        return of(request).pipe(delay(300));
+        this.friendRequests = this.friendRequests.map(friendRequest => {
+            if (friendRequest.id === requestId) {
+                return updatedRequest;
+            }
+
+            return friendRequest;
+        });
+
+        return of(updatedRequest).pipe(delay(300));
     }
 }

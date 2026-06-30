@@ -1,1 +1,15 @@
-<p>friends-list works!</p>
+<section class="friends-section">
+  <h2>Friends</h2>
+
+  @if (friends.length === 0) {
+    <p>No friends found.</p>
+  } @else {
+    <ul>
+      @for (friend of friends; track friend.id) {
+        <li>
+          {{ friend.username }} - {{ friend.email }}
+        </li>
+      }
+    </ul>
+  }
+</section>

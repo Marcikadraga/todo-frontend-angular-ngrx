@@ -179,32 +179,36 @@ export const friendReducer = createReducer(
     ),
 
     on(FriendActions.declineFriendRequestStarted, (state): FriendState => {
-        return {
-            ...state,
-            loading: true,
-            error: null,
-        };
-    }),
+  return {
+    ...state,
+    loading: true,
+    error: null,
+  };
+}),
 
-    on(FriendActions.declineFriendRequestSuccess,(state, { request }): FriendState => {
-            return {
-                ...state,
-                incomingRequests: state.incomingRequests.filter(incomingRequest => {
-                    return incomingRequest.id !== request.id;
-                }),
-                loading: false,
-                error: null,
-            };
-        }
-    ),
+on(
+  FriendActions.declineFriendRequestSuccess,
+  (state, { request }): FriendState => {
+    return {
+      ...state,
+      incomingRequests: state.incomingRequests.filter(incomingRequest => {
+        return incomingRequest.id !== request.id;
+      }),
+      loading: false,
+      error: null,
+    };
+  }
+),
 
-    on(FriendActions.declineFriendRequestFailure,(state, { error }): FriendState => {
-            return {
-                ...state,
-                loading: false,
-                error,
-            };
-        }
-    ),
+on(
+  FriendActions.declineFriendRequestFailure,
+  (state, { error }): FriendState => {
+    return {
+      ...state,
+      loading: false,
+      error,
+    };
+  }
+),
 
 );

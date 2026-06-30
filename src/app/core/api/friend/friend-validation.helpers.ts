@@ -2,13 +2,6 @@ import { FriendRequest } from '../../models/friend-request.model';
 import { Friendship } from '../../models/friendship.model';
 import { User } from '../../models/user.model';
 
-export function isTryingToAddSelf(
-  senderUserId: string,
-  receiverUserId: string
-): boolean {
-  return senderUserId === receiverUserId;
-}
-
 export function userExists(users: User[], userId: string): boolean {
   return users.some(user => user.id === userId);
 }

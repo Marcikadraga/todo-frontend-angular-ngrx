@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+import { User } from '../../../../core/models/user.model';
 
 @Component({
   selector: 'app-friends-list',
@@ -7,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './friends-list.scss',
 })
 export class FriendsList {
-
+  @Input({ required: true }) friends!: User[];
 }

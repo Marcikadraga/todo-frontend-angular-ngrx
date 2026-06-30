@@ -1,1 +1,15 @@
-<p>outgoing-requests works!</p>
+<section class="friends-section">
+  <h2>Outgoing requests</h2>
+
+  @if (requests.length === 0) {
+    <p>No outgoing requests.</p>
+  } @else {
+    <ul>
+      @for (request of requests; track request.id) {
+        <li>
+          Request sent to user id: {{ request.receiverUserId }}
+        </li>
+      }
+    </ul>
+  }
+</section>
