@@ -17,10 +17,11 @@ import {
 import { FriendsList } from '../../components/friends-list/friends-list';
 import { IncomingRequests } from '../../components/incoming-requests/incoming-requests';
 import { OutgoingRequests } from '../../components/outgoing-requests/outgoing-requests';
+import { UserSearch } from '../../components/user-search/user-search';
 
 @Component({
   selector: 'app-friends-page',
-  imports: [AsyncPipe, FriendsList, IncomingRequests, OutgoingRequests],
+  imports: [AsyncPipe, FriendsList, IncomingRequests, OutgoingRequests,UserSearch],
   templateUrl: './friends-page.html',
   styleUrl: './friends-page.scss',
 })
@@ -73,7 +74,7 @@ export class FriendsPage implements OnInit {
         );
       });
   }
-  
+
   acceptRequest(requestId: string): void {
     this.store.dispatch(
       FriendActions.acceptFriendRequestStarted({
@@ -88,5 +89,41 @@ export class FriendsPage implements OnInit {
         requestId,
       })
     );
+  }
+
+  searchUsers(searchText: string): void {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(take(1))
+      .subscribe(user => {
+        if (!user) {
+          return;
+        }
+
+        this.store.dispatch(
+          FriendActions.searchUsersStarted({
+            query: searchText,
+            currentUserId: user.id,
+          })
+        );
+      });
+  }
+
+  sendFriendRequest(receiverUserId: string): void {
+    this.store
+      .select(selectCurrentUser)
+      .pipe(take(1))
+      .subscribe(user => {
+        if (!user) {
+          return;
+        }
+
+        this.store.dispatch(
+          FriendActions.sendFriendRequestStarted({
+            senderUserId: user.id,
+            receiverUserId,
+          })
+        );
+      });
   }
 }

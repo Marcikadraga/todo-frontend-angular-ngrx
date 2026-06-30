@@ -1,6 +1,13 @@
 @if (vm$ | async; as vm) {
   <section class="friends-page">
     <header class="friends-header">
+
+      <app-user-search
+  [users]="vm.searchResults"
+  (searchClicked)="searchUsers($event)"
+  (addFriendClicked)="sendFriendRequest($event)"
+/>
+
       <h1>My Friends</h1>
 
       @if (vm.currentUser) {
@@ -17,12 +24,12 @@
         {{ vm.error }}
       </p>
     } @else {
-      <app-friends-list [friends]="vm.friends" />
+    <app-friends-list [friends]="vm.friends" />
 
     <app-incoming-requests
-    [requests]="vm.incomingRequests"
-    (acceptClicked)="acceptRequest($event)"
-    (declineClicked)="declineRequest($event)"
+      [requests]="vm.incomingRequests"
+      (acceptClicked)="acceptRequest($event)"
+      (declineClicked)="declineRequest($event)"
     />
 
       <app-outgoing-requests [requests]="vm.outgoingRequests" />

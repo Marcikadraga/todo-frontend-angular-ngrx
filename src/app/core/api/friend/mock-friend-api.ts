@@ -44,31 +44,33 @@ export class MockFriendApi implements FriendApi {
 
 
     searchUsers(
-        query: string,
-        currentUserId: string
-    ): Observable<User[]> {
-        const normalizedQuery = query.toLowerCase().trim();
+  query: string,
+  currentUserId: string
+): Observable<User[]> {
+  const normalizedQuery = query.toLowerCase().trim();
 
-        if (!normalizedQuery) {
-            return of([]);
-        }
+  if (!normalizedQuery) {
+    return of([]);
+  }
 
-        const foundUsers = this.users.filter(user => {
-            const isCurrentUser = user.id === currentUserId;
+  const foundUser = this.users.find(user => {
+    const isCurrentUser = user.id === currentUserId;
 
-            const matchesUsername = user.username
-                .toLowerCase()
-                .includes(normalizedQuery);
+    const matchesUsername =
+      user.username.toLowerCase() === normalizedQuery;
 
-            const matchesEmail = user.email
-                .toLowerCase()
-                .includes(normalizedQuery);
+    const matchesEmail =
+      user.email.toLowerCase() === normalizedQuery;
 
-            return !isCurrentUser && (matchesUsername || matchesEmail);
-        });
+    return !isCurrentUser && (matchesUsername || matchesEmail);
+  });
 
-        return of(foundUsers);
-    }
+  if (!foundUser) {
+    return of([]);
+  }
+
+  return of([foundUser]);
+}
 
     getFriends(userId: string): Observable<User[]> {
         const relatedFriendships = this.friendships.filter(friendship => {
