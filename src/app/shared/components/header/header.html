@@ -4,6 +4,9 @@
       <a routerLink="/todos" class="logo">
         MyTodos
       </a>
+      <a routerLink="/friends" routerLinkActive="active">
+        Friends
+      </a>
     </div>
     <div class="nav-auth">
       @if (isAuthenticated$ | async) {

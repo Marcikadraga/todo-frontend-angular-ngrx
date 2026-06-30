@@ -5,6 +5,7 @@ import { RegisterPage } from './features/auth/pages/register-page/register-page'
 import { TodosPage } from './features/todos/pages/todos-page/todos-page';
 import { NotFoundPage } from './features/not-found/pages/not-found-page/not-found-page';
 import { authGuard } from './features/auth/guards/auth.guard';
+import { FriendsPage } from './features/friends/pages/friends-page/friends-page';
 
 export const routes: Routes = [
   {
@@ -25,6 +26,11 @@ export const routes: Routes = [
     component: TodosPage,
     canActivate: [authGuard],
   },
+  {
+  path: 'friends',
+  component: FriendsPage,
+  canActivate: [authGuard],
+},
   {
     path: '**',
     component: NotFoundPage,
