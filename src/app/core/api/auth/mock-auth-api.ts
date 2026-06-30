@@ -32,7 +32,7 @@ export class MockAuthApi implements AuthApi {
         email: user.email,
       },
       token: 'mock-token-123',
-    }).pipe(delay(500));
+    });
   }
 
   register(request: RegisterRequest): Observable<AuthResponse> {
@@ -60,10 +60,10 @@ export class MockAuthApi implements AuthApi {
         email: newUser.email,
       },
       token: 'mock-token-123',
-    }).pipe(delay(500));
+    });
   }
 
   logout(): Observable<void> {
-    return of(void 0).pipe(delay(300));
+    return of(void 0);
   }
 }

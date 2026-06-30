@@ -50,7 +50,7 @@ export class MockFriendApi implements FriendApi {
         const normalizedQuery = query.toLowerCase().trim();
 
         if (!normalizedQuery) {
-            return of([]).pipe(delay(300));
+            return of([]);
         }
 
         const foundUsers = this.users.filter(user => {
@@ -67,7 +67,7 @@ export class MockFriendApi implements FriendApi {
             return !isCurrentUser && (matchesUsername || matchesEmail);
         });
 
-        return of(foundUsers).pipe(delay(300));
+        return of(foundUsers);
     }
 
     getFriends(userId: string): Observable<User[]> {
@@ -87,7 +87,7 @@ export class MockFriendApi implements FriendApi {
             return friendIds.includes(user.id);
         });
 
-        return of(friends).pipe(delay(300));
+        return of(friends);
     }
 
     getIncomingRequests(userId: string): Observable<FriendRequest[]> {
@@ -95,7 +95,7 @@ export class MockFriendApi implements FriendApi {
             .filter(request => request.receiverUserId === userId)
             .filter(request => request.status === 'pending');
 
-        return of(incomingRequests).pipe(delay(300));
+        return of(incomingRequests);
     }
 
     getOutgoingRequests(userId: string): Observable<FriendRequest[]> {
@@ -103,7 +103,7 @@ export class MockFriendApi implements FriendApi {
             .filter(request => request.senderUserId === userId)
             .filter(request => request.status === 'pending');
 
-        return of(outgoingRequests).pipe(delay(300));
+        return of(outgoingRequests);
     }
 
     sendFriendRequest(
@@ -149,7 +149,7 @@ export class MockFriendApi implements FriendApi {
 
         this.friendRequests.push(newRequest);
 
-        return of(newRequest).pipe(delay(300));
+        return of(newRequest);
     }
 
     acceptFriendRequest(requestId: string): Observable<AcceptFriendRequestResponse> {
@@ -191,7 +191,7 @@ export class MockFriendApi implements FriendApi {
         return of({
             request: updatedRequest,
             friendship,
-        }).pipe(delay(300));
+        });
     }
 
     declineFriendRequest(requestId: string): Observable<FriendRequest> {
@@ -221,6 +221,6 @@ export class MockFriendApi implements FriendApi {
             return friendRequest;
         });
 
-        return of(updatedRequest).pipe(delay(300));
+        return of(updatedRequest);
     }
 }
