@@ -1,1 +1,98 @@
-<p>register-page works!</p>
+<section class="register-page">
+  <h1>Register</h1>
+
+  <form class="register-form" (ngSubmit)="register()">
+    <label>
+      Username
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="username"
+        placeholder="marci"
+        autocomplete="username"
+      />
+
+      @if (usernameError) {
+        <p class="field-error">
+          {{ usernameError }}
+        </p>
+      }
+
+      @if ((error$ | async) === 'Username already exists') {
+        <p class="field-error">
+          Username already exists.
+        </p>
+      }
+    </label>
+
+    <label>
+      Email
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        placeholder="marci@test.com"
+        autocomplete="email"
+      />
+
+      @if (emailError) {
+        <p class="field-error">
+          {{ emailError }}
+        </p>
+      }
+
+      @if ((error$ | async) === 'Email already exists') {
+        <p class="field-error">
+          Email already exists.
+        </p>
+      }
+    </label>
+
+    <label>
+      Password
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+        autocomplete="new-password"
+      />
+
+      @if (passwordError) {
+        <p class="field-error">
+          {{ passwordError }}
+        </p>
+      }
+    </label>
+
+    <label>
+      Confirm password
+      <input
+        type="password"
+        name="confirmPassword"
+        [(ngModel)]="confirmPassword"
+        placeholder="Confirm your password"
+        autocomplete="new-password"
+      />
+
+      @if (confirmPasswordError) {
+        <p class="field-error">
+          {{ confirmPasswordError }}
+        </p>
+      }
+    </label>
+
+    <button type="submit" [disabled]="loading$ | async">
+      @if (loading$ | async) {
+        Registering...
+      } @else {
+        Register
+      }
+    </button>
+
+    <p class="login-message">
+      Already have an account?
+      <a routerLink="/login">Login here.</a>
+    </p>
+  </form>
+</section>
