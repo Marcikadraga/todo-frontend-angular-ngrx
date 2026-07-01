@@ -1,4 +1,7 @@
 <section class="register-page">
+  @let authError = error$ | async;
+  @let loading = loading$ | async;
+
   <h1>Register</h1>
 
   <form class="register-form" (ngSubmit)="register()">
@@ -18,7 +21,7 @@
         </p>
       }
 
-      @if ((error$ | async) === 'Username already exists') {
+      @if (authError === 'Username already exists') {
         <p class="field-error">
           Username already exists.
         </p>
@@ -41,7 +44,7 @@
         </p>
       }
 
-      @if ((error$ | async) === 'Email already exists') {
+      @if (authError === 'Email already exists') {
         <p class="field-error">
           Email already exists.
         </p>
@@ -82,8 +85,8 @@
       }
     </label>
 
-    <button type="submit" [disabled]="loading$ | async">
-      @if (loading$ | async) {
+    <button type="submit" [disabled]="loading">
+      @if (loading) {
         Registering...
       } @else {
         Register

@@ -7,8 +7,8 @@ export interface MockUser extends User {
 export const MOCK_USERS: MockUser[] = [
   {
     id: '1',
-    username: 'marci',
-    email: 'MarciMockLogin_2026!',
+    username: 'Marci',
+    email: 'Marci@test.com',
     password: 'MarciMockLogin_2026!',
   },
   {
